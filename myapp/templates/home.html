@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Hospital Management System</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Segoe UI", Tahoma, sans-serif;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #11998e, #38ef7d);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            max-width: 600px;
+            width: 100%;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+
+        h1 {
+            color: #11998e;
+            font-size: 28px;
+        }
+
+        .subtitle {
+            color: #777;
+            margin: 8px 0 30px;
+        }
+
+        .menu {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .menu a {
+            padding: 20px 10px;
+            background: #f4fbf9;
+            border: 2px solid #d5f0ea;
+            border-radius: 12px;
+            color: #11998e;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+
+        .menu a:hover {
+            background: #11998e;
+            color: white;
+            transform: translateY(-4px);
+        }
+
+        .menu a.login {
+            grid-column: span 2;
+            background: #11998e;
+            color: white;
+        }
+
+        @media (max-width: 450px) {
+            .container {
+                padding: 25px 18px;
+            }
+
+            h1 {
+                font-size: 23px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+
+        <h1>Hospital Management System</h1>
+        <p class="subtitle">Welcome to our Hospital</p>
+
+        <div class="menu">
+
+            <a href="{% url 'patients' %}">
+                View Patients
+            </a>
+
+            <a href="{% url 'doctors' %}">
+                View Doctors
+            </a>
+
+            <a href="{% url 'departments' %}">
+                Departments
+            </a>
+
+            <a href="{% url 'add_doctor' %}">
+                Add Doctor
+            </a>
+
+            <a href="{% url 'login' %}" class="login">
+                Login
+            </a>
+
+        </div>
+    </div>
+</body>
+</html>

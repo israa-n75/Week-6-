@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Hospital Patients</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Segoe UI", Tahoma, sans-serif;
+            min-height: 100vh;
+            background: #f0f7f6;
+            padding: 30px;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: auto;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            color: #167d72;
+        }
+
+        .logout {
+            background: #167d72;
+            color: white;
+            padding: 10px 18px;
+            border-radius: 8px;
+            text-decoration: none;
+        }
+
+        .add-patient {
+            display: inline-block;
+            background: #167d72;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            margin-bottom: 25px;
+        }
+
+        .add-patient:hover,
+        .logout:hover {
+            background: #105d55;
+        }
+
+        .patient-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 22px;
+        }
+
+        .patient-card {
+            background: white;
+            padding: 25px;
+            border-radius: 14px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            border-top: 5px solid #167d72;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .patient-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 22px rgba(0, 0, 0, 0.12);
+        }
+
+        .patient-number {
+            color: #167d72;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .patient-name {
+            font-size: 21px;
+            font-weight: 700;
+            color: #263b39;
+            margin-bottom: 16px;
+            overflow-wrap: anywhere;
+        }
+
+        .patient-detail {
+            color: #596663;
+            margin-bottom: 10px;
+            font-size: 15px;
+            overflow-wrap: anywhere;
+        }
+
+        .actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 22px;
+            padding-top: 18px;
+            border-top: 1px solid #e6eeec;
+        }
+
+        .btn {
+            flex: 1;
+            text-align: center;
+            padding: 10px;
+            border-radius: 7px;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .btn-edit {
+            background: #e1f3ef;
+            color: #167d72;
+        }
+
+        .btn-edit:hover {
+            background: #167d72;
+            color: white;
+        }
+
+        .btn-delete {
+            background: #fde9e7;
+            color: #c0392b;
+        }
+
+        .btn-delete:hover {
+            background: #c0392b;
+            color: white;
+        }
+
+        .empty-message {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            text-align: center;
+            color: #596663;
+        }
+
+        @media (max-width: 500px) {
+            body {
+                padding: 18px;
+            }
+
+            .header h1 {
+                font-size: 22px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+
+        <div class="header">
+            <h1>Hospital Patients</h1>
+            <a href="{% url 'logout' %}" class="logout">Logout</a>
+        </div>
+
+        <a href="{% url 'add_patient' %}" class="add-patient">
+            + Add Patient
+        </a>
+
+        <div class="patient-grid">
+
+            {% for patient in patients %}
+
+                <div class="patient-card">
+
+                    <p class="patient-number">
+                        Patient #{{ patient.id }}
+                    </p>
+
+                    <h2 class="patient-name">
+                        {{ patient.name }}
+                    </h2>
+
+                    <p class="patient-detail">
+                        <strong>Age:</strong> {{ patient.age }}
+                    </p>
+
+                    <p class="patient-detail">
+                        <strong>Disease:</strong>
+                        {{ patient.disease|default:"Not specified" }}
+                    </p>
+
+                    <div class="actions">
+                        <a href="{% url 'edit_patient' patient.id %}"
+                           class="btn btn-edit">
+                            Edit
+                        </a>
+
+                        <a href="{% url 'delete_patient' patient.id %}"
+                           class="btn btn-delete">
+                            Delete
+                        </a>
+                    </div>
+
+                </div>
+
+            {% empty %}
+
+                <div class="empty-message">
+                    No patients added yet.
+                </div>
+
+            {% endfor %}
+
+        </div>
+    </div>
+</body>
+</html>

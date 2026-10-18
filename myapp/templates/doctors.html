@@ -1,0 +1,259 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Hospital Doctors</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Segoe UI", Tahoma, sans-serif;
+            min-height: 100vh;
+            background: #f0f7f6;
+            padding: 30px;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: auto;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            gap: 15px;
+        }
+
+        .header h1 {
+            color: #167d72;
+        }
+
+        .add-btn {
+            display: inline-block;
+            background: #167d72;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            white-space: nowrap;
+            transition: background 0.2s;
+        }
+
+        .add-btn:hover {
+            background: #105d55;
+        }
+
+        .doctor-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 22px;
+        }
+
+        .doctor-card {
+            background: white;
+            padding: 25px;
+            border-radius: 14px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            border-top: 5px solid #167d72;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .doctor-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 22px rgba(0, 0, 0, 0.12);
+        }
+
+        .doctor-number {
+            color: #167d72;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .doctor-name {
+            font-size: 21px;
+            font-weight: 700;
+            color: #263b39;
+            margin-bottom: 16px;
+            overflow-wrap: anywhere;
+        }
+
+        .doctor-detail {
+            color: #596663;
+            margin-bottom: 12px;
+            font-size: 15px;
+            overflow-wrap: anywhere;
+        }
+
+        .tag {
+            display: inline-block;
+            background: #e1f3ef;
+            color: #167d72;
+            padding: 6px 12px;
+            border-radius: 7px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .edit-btn,
+        .delete-btn {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 7px;
+            text-align: center;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .edit-btn {
+            background: #e1f3ef;
+            color: #167d72;
+        }
+
+        .edit-btn:hover {
+            background: #c9e8e1;
+        }
+
+        .delete-btn {
+            background: #ffe5e5;
+            color: #c62828;
+        }
+
+        .delete-btn:hover {
+            background: #ffcaca;
+        }
+
+        .empty {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            text-align: center;
+            color: #596663;
+            grid-column: 1 / -1;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 28px;
+            color: #167d72;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 500px) {
+            body {
+                padding: 18px;
+            }
+
+            .header h1 {
+                font-size: 22px;
+            }
+
+            .add-btn {
+                padding: 10px 12px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+
+        <div class="header">
+            <h1>Doctors List</h1>
+
+            <a href="{% url 'add_doctor' %}" class="add-btn">
+                + Add Doctor
+            </a>
+        </div>
+
+        <div class="doctor-grid">
+
+            {% for doctor in doctors %}
+
+                <div class="doctor-card">
+
+                    <p class="doctor-number">
+                        Doctor #{{ doctor.id }}
+                    </p>
+
+                    <h2 class="doctor-name">
+                        {{ doctor.name }}
+                    </h2>
+
+                    <p class="doctor-detail">
+                        <strong>Specialization:</strong>
+                    </p>
+
+                    <p class="doctor-detail">
+                        <span class="tag">
+                            {{ doctor.specialization }}
+                        </span>
+                    </p>
+
+                    <p class="doctor-detail">
+                        <strong>Age:</strong> {{ doctor.age }}
+                    </p>
+
+                    <div class="actions">
+
+                        <a href="{% url 'edit_doctor' doctor.id %}"
+                           class="edit-btn">
+                            Edit
+                        </a>
+
+                        <form method="POST"
+                              action="{% url 'delete_doctor' doctor.id %}"
+                              onsubmit="return confirm('Are you sure you want to delete this doctor?');"
+                              style="flex: 1;">
+                            {% csrf_token %}
+
+                            <button type="submit" class="delete-btn"
+                                    style="width: 100%;">
+                                Delete
+                            </button>
+                        </form>
+
+                    </div>
+
+                </div>
+
+            {% empty %}
+
+                <div class="empty">
+                    <p>No doctors added yet.</p>
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+        <a href="{% url 'home' %}" class="back-link">
+            &larr; Back to Home
+        </a>
+
+    </div>
+</body>
+</html>
