@@ -150,13 +150,15 @@ def add_department(request):
 @login_required(login_url='login')
 def edit_department(request, department_id):
     department = get_object_or_404(
-        Department, id=department_id
+        Department,
+        id=department_id
     )
 
     if request.method == "POST":
         department.name = request.POST.get("name")
-        department.description = request.POST.get("description")
+        department.doctor_name = request.POST.get("doctor_name")
         department.save()
+
         return redirect('departments')
 
     return render(request, 'edit_department.html', {
@@ -164,7 +166,6 @@ def edit_department(request, department_id):
     })
 
 
-# Delete a department
 @login_required(login_url='login')
 def delete_department(request, department_id):
     department = get_object_or_404(

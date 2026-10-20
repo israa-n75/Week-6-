@@ -85,9 +85,9 @@
             overflow-wrap: anywhere;
         }
 
-        .doctor-detail {
+        .doctor-label {
             color: #596663;
-            margin-bottom: 12px;
+            margin-bottom: 8px;
             font-size: 15px;
         }
 
@@ -95,16 +95,19 @@
             display: inline-block;
             background: #e1f3ef;
             color: #167d72;
-            padding: 6px 12px;
+            padding: 8px 12px;
             border-radius: 7px;
             font-size: 14px;
             font-weight: 600;
+            overflow-wrap: anywhere;
         }
 
         .actions {
             display: flex;
             gap: 12px;
             margin-top: 20px;
+            padding-top: 18px;
+            border-top: 1px solid #e6eeec;
         }
 
         .edit-btn,
@@ -128,9 +131,17 @@
             color: white;
         }
 
+        .delete-form {
+            flex: 1;
+            margin: 0;
+        }
+
         .delete-btn {
+            width: 100%;
             background: #ffe3e3;
             color: #d63031;
+            border: none;
+            cursor: pointer;
         }
 
         .delete-btn:hover {
@@ -180,6 +191,7 @@
 
     <div class="container">
 
+        <!-- Header -->
         <div class="header">
 
             <h1>Departments List</h1>
@@ -190,7 +202,7 @@
 
         </div>
 
-
+        <!-- Department Cards -->
         <div class="department-grid">
 
             {% for department in departments %}
@@ -205,29 +217,39 @@
                         {{ department.name }}
                     </h2>
 
-                    <p class="doctor-detail">
+                    <p class="doctor-label">
                         <strong>Doctor:</strong>
                     </p>
 
-                    <p class="doctor-detail">
+                    <p>
                         <span class="doctor-name">
-                            🩺 {{ department.doctor_name }}
+                            {{ department.doctor_name|default:"No doctor assigned" }}
                         </span>
                     </p>
 
-
+                    <!-- Actions -->
                     <div class="actions">
 
+                        <!-- Edit -->
                         <a href="{% url 'edit_department' department.id %}"
                            class="edit-btn">
                             Edit
                         </a>
 
-                        <a href="{% url 'delete_department' department.id %}"
-                           class="delete-btn"
-                           onclick="return confirm('Are you sure you want to delete this department?');">
-                            Delete
-                        </a>
+                        <!-- Delete -->
+                        <form method="POST"
+                              action="{% url 'delete_department' department.id %}"
+                              class="delete-form">
+
+                            {% csrf_token %}
+
+                            <button type="submit"
+                                    class="delete-btn"
+                                    onclick="return confirm('Are you sure you want to delete this department?');">
+                                Delete
+                            </button>
+
+                        </form>
 
                     </div>
 
@@ -243,7 +265,7 @@
 
         </div>
 
-
+        <!-- Back to Home -->
         <a href="{% url 'home' %}" class="back-link">
             &larr; Back to Home
         </a>

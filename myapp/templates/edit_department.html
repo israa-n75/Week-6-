@@ -46,8 +46,7 @@
             color: #444;
         }
 
-        input,
-        textarea {
+        input {
             width: 100%;
             padding: 12px 14px;
             border: 2px solid #d5f0ea;
@@ -57,14 +56,8 @@
             outline: none;
         }
 
-        input:focus,
-        textarea:focus {
+        input:focus {
             border-color: #11998e;
-        }
-
-        textarea {
-            min-height: 100px;
-            resize: vertical;
         }
 
         button {
@@ -108,6 +101,7 @@
 
             {% csrf_token %}
 
+            <!-- Department Name -->
             <div class="form-group">
                 <label for="name">Department Name</label>
 
@@ -116,18 +110,23 @@
                     name="name"
                     id="name"
                     value="{{ department.name }}"
+                    placeholder="Enter department name"
                     required
                 >
             </div>
 
+            <!-- Doctor Name -->
             <div class="form-group">
-                <label for="description">Description</label>
+                <label for="doctor_name">Doctor Name</label>
 
-                <textarea
-                    name="description"
-                    id="description"
+                <input
+                    type="text"
+                    name="doctor_name"
+                    id="doctor_name"
+                    value="{{ department.doctor_name }}"
+                    placeholder="Enter doctor name"
                     required
-                >{{ department.description }}</textarea>
+                >
             </div>
 
             <button type="submit">

@@ -22,12 +22,24 @@
 
         .container {
             background: white;
-            max-width: 600px;
+            max-width: 620px;
             width: 100%;
             padding: 40px;
-            border-radius: 16px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
             text-align: center;
+        }
+
+        .logo {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 18px;
+            background: #e8f8f5;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
         }
 
         h1 {
@@ -47,26 +59,48 @@
         }
 
         .menu a {
-            padding: 20px 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            padding: 22px 10px;
             background: #f4fbf9;
             border: 2px solid #d5f0ea;
-            border-radius: 12px;
+            border-radius: 14px;
             color: #11998e;
             font-weight: 600;
             text-decoration: none;
             transition: all 0.2s;
         }
 
+        .menu a .icon {
+            font-size: 28px;
+        }
+
         .menu a:hover {
             background: #11998e;
             color: white;
+            border-color: #11998e;
             transform: translateY(-4px);
+            box-shadow: 0 8px 18px rgba(17, 153, 142, 0.35);
+        }
+
+        .menu a.wide {
+            grid-column: span 2;
         }
 
         .menu a.login {
             grid-column: span 2;
+            flex-direction: row;
+            justify-content: center;
             background: #11998e;
+            border-color: #11998e;
             color: white;
+        }
+
+        .menu a.login:hover {
+            background: #0c7a70;
+            border-color: #0c7a70;
         }
 
         @media (max-width: 450px) {
@@ -84,30 +118,43 @@
 <body>
     <div class="container">
 
+        <div class="logo">🏥</div>
+
         <h1>Hospital Management System</h1>
         <p class="subtitle">Welcome to our Hospital</p>
 
         <div class="menu">
 
             <a href="{% url 'patients' %}">
+                <span class="icon">👤</span>
                 View Patients
             </a>
 
             <a href="{% url 'doctors' %}">
+                <span class="icon">🩺</span>
                 View Doctors
             </a>
 
-            <a href="{% url 'departments' %}">
+            <a href="{% url 'departments' %}" class="wide">
+                <span class="icon">🏢</span>
                 Departments
             </a>
 
-            <a href="{% url 'add_doctor' %}">
-                Add Doctor
-            </a>
+            {% if user.is_authenticated %}
 
-            <a href="{% url 'login' %}" class="login">
-                Login
-            </a>
+                <a href="{% url 'logout' %}" class="login">
+                    <span class="icon">🔓</span>
+                    Logout
+                </a>
+
+            {% else %}
+
+                <a href="{% url 'login' %}" class="login">
+                    <span class="icon">🔐</span>
+                    Login
+                </a>
+
+            {% endif %}
 
         </div>
     </div>
