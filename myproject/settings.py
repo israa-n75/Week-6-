@@ -10,22 +10,23 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/6.1/ref/settings/
 """
 
-from pathlib import Path
+from pathlib import Path   
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
-
-
+BASE_DIR = Path(__file__).resolve().parent.parent        
+                                                         
+                                                          
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/6.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-lc$=vd_vf9fz@zv(^92xd3g3#-h+id&m9ney3ewt2=0f=km9r%'
+SECRET_KEY = 'django-insecure-lc$=vd_vf9fz@zv(^92xd3g3#-h+id&m9ney3ewt2=0f=km9r%'   
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = True    ## DEBUG controls Django's debugging/development mode
 
-ALLOWED_HOSTS = []
+
+ALLOWED_HOSTS = []    
 
 
 # Application definition
@@ -54,9 +55,9 @@ ROOT_URLCONF = 'myproject.urls'
 
 TEMPLATES = [
     {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
-        'APP_DIRS': True,
+        'BACKEND': 'django.template.backends.django.DjangoTemplates', 
+        'DIRS': [],    
+        'APP_DIRS': True,    
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.request',
@@ -67,7 +68,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'myproject.wsgi.application'
+WSGI_APPLICATION = 'myproject.wsgi.application'   ### This is the configuration that lets the Django application communicate with the web server.
 
 
 # Database
@@ -103,9 +104,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/6.1/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'en-us'     ##Django application-inde default language specify cheyyunnu.
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'UTC'      ##Application eth time zone use cheyyanam enn specify cheyyunnu.UTC → Coordinated Universal Time.
 
 USE_I18N = True
 
@@ -115,7 +116,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.1/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = 'static/'     ###Ith static files-inte URL path aanu.
 
 
 # Email

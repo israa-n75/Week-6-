@@ -13,14 +13,15 @@ def home(request):
 # View all patients
 @login_required(login_url='login')
 def patients(request):
-    patient_list = Patient.objects.all()
-    return render(request, 'patients.html', {
+    patient_list = Patient.objects.all()      
+    return render(request, 'patients.html', {       ##Patient data patients.html-ilekku pass cheyyunnu.
         'patients': patient_list
     })
 
 
+
 # Add a patient
-@login_required(login_url='login')
+@login_required(login_url='login')        ##Ith patient-ne database-il add cheyyaanulla function aanu.
 def add_patient(request):
     if request.method == "POST":
         name = request.POST.get("name")
@@ -135,12 +136,13 @@ def departments(request):
 def add_department(request):
     if request.method == "POST":
         name = request.POST.get("name")
-        description = request.POST.get("description")
+        doctor_name = request.POST.get("doctor_name")
 
         Department.objects.create(
             name=name,
-            description=description
+            doctor_name=doctor_name
         )
+
         return redirect('departments')
 
     return render(request, 'add_department.html')
