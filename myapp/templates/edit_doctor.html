@@ -4,6 +4,16 @@
     <meta charset="UTF-8">
     <title>Edit Doctor - Hospital Management System</title>
     <style>
+        :root {
+            --primary: #0B2545;
+            --secondary: #0E9AA7;
+            --background: #F3F5F7;
+            --card: #FFFFFF;
+            --text: #333840;
+            --text-light: #6B7280;
+            --border: #DCE3E8;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -13,7 +23,8 @@
         body {
             font-family: "Segoe UI", Tahoma, sans-serif;
             min-height: 100vh;
-            background: linear-gradient(135deg, #11998e, #38ef7d);
+            background: var(--background);
+            color: var(--text);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -21,16 +32,17 @@
         }
 
         .form-box {
-            background: white;
+            background: var(--card);
             width: 100%;
             max-width: 420px;
             padding: 40px 35px;
             border-radius: 16px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            border-top: 6px solid var(--primary);
+            box-shadow: 0 10px 30px rgba(11, 37, 69, 0.12);
         }
 
         h1 {
-            color: #11998e;
+            color: var(--primary);
             text-align: center;
             margin-bottom: 30px;
         }
@@ -43,28 +55,34 @@
             display: block;
             margin-bottom: 6px;
             font-weight: 600;
-            color: #444;
+            color: var(--text);
         }
 
         input {
             width: 100%;
             padding: 12px 14px;
-            border: 2px solid #d5f0ea;
+            border: 2px solid var(--border);
             border-radius: 8px;
             font-size: 15px;
             font-family: inherit;
+            color: var(--text);
             outline: none;
-            transition: border-color 0.2s;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        input::placeholder {
+            color: #9AA3AD;
         }
 
         input:focus {
-            border-color: #11998e;
+            border-color: var(--secondary);
+            box-shadow: 0 0 0 3px rgba(14, 154, 167, 0.15);
         }
 
         button {
             width: 100%;
             padding: 13px;
-            background: #11998e;
+            background: var(--primary);
             color: white;
             border: none;
             border-radius: 8px;
@@ -75,20 +93,21 @@
         }
 
         button:hover {
-            background: #0c7a70;
+            background: #16386B;
         }
 
         .back-link {
             display: block;
             text-align: center;
             margin-top: 18px;
-            color: #777;
+            color: var(--text-light);
             text-decoration: none;
             font-size: 14px;
         }
 
         .back-link:hover {
-            color: #11998e;
+            color: var(--primary);
+            text-decoration: underline;
         }
     </style>
 </head>

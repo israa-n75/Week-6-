@@ -1,10 +1,22 @@
-
 <!DOCTYPE html>
 <html>
 <head>
     <title>Hospital Doctors</title>
 
     <style>
+        :root {
+            --primary: #0B2545;
+            --secondary: #0E9AA7;
+            --background: #F3F5F7;
+            --card: #FFFFFF;
+            --text: #333840;
+            --text-light: #6B7280;
+            --border: #DCE3E8;
+            --tint: #E3F4F6;
+            --danger: #C0392B;
+            --danger-tint: #FDE9E7;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -14,7 +26,8 @@
         body {
             font-family: "Segoe UI", Tahoma, sans-serif;
             min-height: 100vh;
-            background: #f0f7f6;
+            background: var(--background);
+            color: var(--text);
             padding: 30px;
         }
 
@@ -32,12 +45,12 @@
         }
 
         .header h1 {
-            color: #167d72;
+            color: var(--primary);
         }
 
         .add-btn {
             display: inline-block;
-            background: #167d72;
+            background: var(--primary);
             color: white;
             padding: 12px 20px;
             border-radius: 8px;
@@ -48,7 +61,7 @@
         }
 
         .add-btn:hover {
-            background: #105d55;
+            background: #16386B;
         }
 
         .doctor-grid {
@@ -58,101 +71,111 @@
         }
 
         .doctor-card {
-            background: white;
+            background: var(--card);
             padding: 25px;
             border-radius: 14px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-            border-top: 5px solid #167d72;
+            box-shadow: 0 4px 15px rgba(11, 37, 69, 0.08);
+            border-top: 5px solid var(--primary);
             transition: transform 0.2s, box-shadow 0.2s;
         }
 
         .doctor-card:hover {
             transform: translateY(-4px);
-            box-shadow: 0 8px 22px rgba(0, 0, 0, 0.12);
+            box-shadow: 0 8px 22px rgba(11, 37, 69, 0.15);
         }
 
         .doctor-number {
-            color: #167d72;
+            color: var(--text-light);
             font-size: 13px;
             font-weight: 600;
-            margin-bottom: 12px;
+            margin-bottom: 8px;
         }
 
         .doctor-name {
-            font-size: 21px;
+            font-size: 22px;
             font-weight: 700;
-            color: #263b39;
-            margin-bottom: 16px;
+            color: var(--primary);
+            margin-bottom: 20px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border);
             overflow-wrap: anywhere;
         }
 
-        .doctor-detail {
-            color: #596663;
-            margin-bottom: 12px;
-            font-size: 15px;
-            overflow-wrap: anywhere;
+        .field {
+            margin-bottom: 14px;
         }
 
-        .tag {
-            display: inline-block;
-            background: #e1f3ef;
-            color: #167d72;
-            padding: 6px 12px;
-            border-radius: 7px;
-            font-size: 14px;
+        .label {
+            display: block;
+            color: var(--text-light);
+            font-size: 12px;
             font-weight: 600;
+            letter-spacing: 0.6px;
+            text-transform: uppercase;
+            margin-bottom: 3px;
+        }
+
+        .value {
+            display: block;
+            color: var(--text);
+            font-size: 16px;
+            font-weight: 500;
+            overflow-wrap: anywhere;
         }
 
         .actions {
             display: flex;
             gap: 10px;
-            margin-top: 20px;
+            margin-top: 22px;
         }
 
         .edit-btn,
         .delete-btn {
             flex: 1;
             padding: 10px;
-            border: none;
+            border: 2px solid transparent;
             border-radius: 7px;
             text-align: center;
             text-decoration: none;
             font-size: 14px;
             font-weight: 600;
             cursor: pointer;
+            transition: all 0.2s;
         }
 
         .edit-btn {
-            background: #e1f3ef;
-            color: #167d72;
+            background: var(--tint);
+            color: var(--primary);
         }
 
         .edit-btn:hover {
-            background: #c9e8e1;
+            background: var(--card);
+            border-color: var(--secondary);
         }
 
         .delete-btn {
-            background: #ffe5e5;
-            color: #c62828;
+            background: var(--danger-tint);
+            color: var(--danger);
         }
 
         .delete-btn:hover {
-            background: #ffcaca;
+            background: var(--danger);
+            color: white;
         }
 
         .empty {
-            background: white;
+            background: var(--card);
             padding: 30px;
             border-radius: 12px;
             text-align: center;
-            color: #596663;
+            color: var(--text-light);
             grid-column: 1 / -1;
         }
 
         .back-link {
             display: inline-block;
             margin-top: 28px;
-            color: #167d72;
+            color: var(--primary);
             text-decoration: none;
             font-weight: 600;
         }
@@ -203,19 +226,15 @@
                         {{ doctor.name }}
                     </h2>
 
-                    <p class="doctor-detail">
-                        <strong>Specialization:</strong>
-                    </p>
+                    <div class="field">
+                        <span class="label">Specialization</span>
+                        <span class="value">{{ doctor.specialization }}</span>
+                    </div>
 
-                    <p class="doctor-detail">
-                        <span class="tag">
-                            {{ doctor.specialization }}
-                        </span>
-                    </p>
-
-                    <p class="doctor-detail">
-                        <strong>Age:</strong> {{ doctor.age }}
-                    </p>
+                    <div class="field">
+                        <span class="label">Age</span>
+                        <span class="value">{{ doctor.age }}</span>
+                    </div>
 
                     <div class="actions">
 
