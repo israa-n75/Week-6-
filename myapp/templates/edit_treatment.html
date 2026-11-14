@@ -1,0 +1,143 @@
+
+{% extends 'base.html' %}
+
+{% block title %}Edit Treatment{% endblock %}
+
+{% block extra_css %}
+<style>
+    .form-box {
+        max-width: 500px;
+        margin: 40px auto;
+        padding: 30px;
+        background: var(--card);
+        border-radius: 14px;
+        border-top: 5px solid var(--primary);
+        box-shadow: 0 4px 15px rgba(11, 37, 69, 0.08);
+    }
+
+    h1 {
+        color: var(--primary);
+        margin-bottom: 25px;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    label {
+        display: block;
+        font-weight: 600;
+        margin-bottom: 8px;
+    }
+
+    input[type="text"], textarea {
+        width: 100%;
+        padding: 12px;
+        border: 2px solid var(--border);
+        border-radius: 8px;
+        font-family: inherit;
+        font-size: 15px;
+        box-sizing: border-box;
+    }
+
+    textarea {
+        min-height: 100px;
+        resize: vertical;
+    }
+
+    .patient-option {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin: 10px 0;
+        font-weight: 400;
+    }
+
+    .patient-option input {
+        width: auto;
+    }
+
+    .save-btn {
+        width: 100%;
+        padding: 13px;
+        background: var(--primary);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-weight: 600;
+        cursor: pointer;
+    }
+
+    .back-link {
+        display: block;
+        text-align: center;
+        margin-top: 18px;
+        color: var(--primary);
+        text-decoration: none;
+    }
+</style>
+{% endblock %}
+
+
+{% block content %}
+<div class="form-box">
+
+    <h1>Edit Treatment</h1>
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <div class="form-group">
+            <label for="name">Treatment Name</label>
+
+            <input type="text"
+                   name="name"
+                   id="name"
+                   value="{{ treatment.name }}"
+                   required>
+        </div>
+
+        <div class="form-group">
+            <label for="description">Description</label>
+
+            <textarea name="description"
+                      id="description">{{ treatment.description }}</textarea>
+        </div>
+
+        <div class="form-group">
+            <label>Select Patients</label>
+
+            {% for patient in patients %}
+
+                <label class="patient-option">
+
+                    <input type="checkbox"
+                           name="patients"
+                           value="{{ patient.id }}"
+                           {% if patient in treatment.patients.all %}
+                               checked
+                           {% endif %}>
+
+                    {{ patient.name }}
+
+                </label>
+
+            {% empty %}
+
+                <p>No patients available.</p>
+
+            {% endfor %}
+        </div>
+
+        <button type="submit" class="save-btn">
+            Update Treatment
+        </button>
+
+    </form>
+
+    <a href="{% url 'treatments' %}" class="back-link">
+        &larr; Back to Treatments
+    </a>
+
+</div>
+{% endblock %}

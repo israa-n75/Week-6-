@@ -1,118 +1,35 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Add Doctor - Hospital Management System</title>
-    <style>
-        :root {
-            --primary: #0B2545;
-            --secondary: #0E9AA7;
-            --background: #F3F5F7;
-            --card: #FFFFFF;
-            --text: #333840;
-            --text-light: #6B7280;
-            --border: #DCE3E8;
-        }
+{% extends 'base.html' %}
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+{% block title %}Add Doctor{% endblock %}
 
-        body {
-            font-family: "Segoe UI", Tahoma, sans-serif;
-            min-height: 100vh;
-            background: var(--background);
-            color: var(--text);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
+{% block extra_css %}
+<style>
+    .message {
+        text-align: center;
+        color: #D32F2F;
+        font-size: 14px;
+        margin-bottom: 15px;
+    }
 
-        .form-box {
-            background: var(--card);
-            width: 100%;
-            max-width: 420px;
-            padding: 40px 35px;
-            border-radius: 16px;
-            border-top: 6px solid var(--primary);
-            box-shadow: 0 10px 30px rgba(11, 37, 69, 0.12);
-        }
+    .department-link {
+        display: block;
+        margin-top: 8px;
+        color: var(--secondary);
+        font-size: 13px;
+        text-decoration: none;
+    }
+</style>
+{% endblock %}
 
-        h1 {
-            color: var(--primary);
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 6px;
-            font-weight: 600;
-            color: var(--text);
-        }
-
-        input {
-            width: 100%;
-            padding: 12px 14px;
-            border: 2px solid var(--border);
-            border-radius: 8px;
-            font-size: 15px;
-            font-family: inherit;
-            color: var(--text);
-            outline: none;
-            transition: border-color 0.2s, box-shadow 0.2s;
-        }
-
-        input::placeholder {
-            color: #9AA3AD;
-        }
-
-        input:focus {
-            border-color: var(--secondary);
-            box-shadow: 0 0 0 3px rgba(14, 154, 167, 0.15);
-        }
-
-        button {
-            width: 100%;
-            padding: 13px;
-            background: var(--primary);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-
-        button:hover {
-            background: #16386B;
-        }
-
-        .back-link {
-            display: block;
-            text-align: center;
-            margin-top: 18px;
-            color: var(--text-light);
-            text-decoration: none;
-            font-size: 14px;
-        }
-
-        .back-link:hover {
-            color: var(--primary);
-            text-decoration: underline;
-        }
-    </style>
-</head>
-<body>
+{% block content %}
+<div class="page-wrap">
     <div class="form-box">
-        <h1>🩺 Add Doctor</h1>
+
+        <h1>Add Doctor</h1>
+
+        {% if not departments %}
+            <p class="message">Please add a department before adding a doctor.</p>
+        {% endif %}
 
         <form method="POST">
             {% csrf_token %}
@@ -132,10 +49,26 @@
                 <input type="number" name="age" id="age" placeholder="Enter doctor age" required>
             </div>
 
-            <button type="submit">Add Doctor</button>
+            <div class="form-group">
+                <label for="department">Select Department</label>
+
+                <select name="department" id="department" required>
+                    <option value="">-- Choose Department --</option>
+                    {% for department in departments %}
+                        <option value="{{ department.id }}">{{ department.name }}</option>
+                    {% endfor %}
+                </select>
+
+                {% if not departments %}
+                    <a href="{% url 'add_department' %}" class="department-link">+ Add Department</a>
+                {% endif %}
+            </div>
+
+            <button type="submit" {% if not departments %}disabled{% endif %}>Add Doctor</button>
         </form>
 
         <a href="{% url 'doctors' %}" class="back-link">← View Doctors</a>
+
     </div>
-</body>
-</html>
+</div>
+{% endblock %}

@@ -1,0 +1,148 @@
+{% extends 'base.html' %}
+
+{% block title %}Cardiology Doctors{% endblock %}
+
+{% block extra_css %}
+<style>
+    .container {
+        max-width: 1100px;
+        margin: auto;
+        padding: 10px 30px;
+    }
+
+    .header {
+        margin-bottom: 30px;
+    }
+
+    .header h1 {
+        color: var(--primary);
+    }
+
+    .doctor-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+        gap: 22px;
+    }
+
+    .doctor-card {
+        background: var(--card);
+        padding: 25px;
+        border-radius: 14px;
+        box-shadow: 0 4px 15px rgba(11, 37, 69, 0.08);
+        border-top: 5px solid var(--primary);
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .doctor-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 8px 22px rgba(11, 37, 69, 0.15);
+    }
+
+    .doctor-name {
+        font-size: 22px;
+        font-weight: 700;
+        color: var(--primary);
+        margin-bottom: 20px;
+        padding-bottom: 16px;
+        border-bottom: 1px solid var(--border);
+        overflow-wrap: anywhere;
+    }
+
+    .field {
+        margin-bottom: 14px;
+    }
+
+    .label {
+        display: block;
+        color: var(--text-light);
+        font-size: 12px;
+        font-weight: 600;
+        letter-spacing: 0.6px;
+        text-transform: uppercase;
+        margin-bottom: 3px;
+    }
+
+    .value {
+        display: block;
+        color: var(--text);
+        font-size: 16px;
+        font-weight: 500;
+        overflow-wrap: anywhere;
+    }
+
+    .empty {
+        background: var(--card);
+        padding: 30px;
+        border-radius: 12px;
+        text-align: center;
+        color: var(--text-light);
+        grid-column: 1 / -1;
+    }
+
+    .container .back-link {
+        display: inline-block;
+        text-align: left;
+        margin-top: 28px;
+        font-size: 16px;
+        color: var(--primary);
+        font-weight: 600;
+    }
+
+    @media (max-width: 500px) {
+        .container {
+            padding: 18px;
+        }
+
+        .header h1 {
+            font-size: 22px;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+
+    <div class="header">
+        <h1>Cardiology Department Doctors</h1>
+    </div>
+
+    <div class="doctor-grid">
+
+        {% for doctor in doctors %}
+
+            <div class="doctor-card">
+
+                <h3 class="doctor-name">{{ doctor.name }}</h3>
+
+                <div class="field">
+                    <span class="label">Specialization</span>
+                    <span class="value">{{ doctor.specialization }}</span>
+                </div>
+
+                <div class="field">
+                    <span class="label">Age</span>
+                    <span class="value">{{ doctor.age }}</span>
+                </div>
+
+                <div class="field">
+                    <span class="label">Department</span>
+                    <span class="value">{{ doctor.department.name }}</span>
+                </div>
+
+            </div>
+
+        {% empty %}
+
+            <div class="empty">
+                <p>No doctors found in Cardiology.</p>
+            </div>
+
+        {% endfor %}
+
+    </div>
+
+    <a href="{% url 'departments' %}" class="back-link">&larr; Back to Departments</a>
+
+</div>
+{% endblock %}

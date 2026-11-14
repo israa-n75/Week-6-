@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+
+{% block title %}Add Medical Record{% endblock %}
+
+{% block extra_css %}
+<style>
+    :root {
+        --danger: #C0392B;
+        --danger-tint: #FDE9E7;
+    }
+
+    /* base-il 420px aanu, ivide 450px venam */
+    .form-box {
+        max-width: 450px;
+    }
+
+    /* base-il margin-bottom 30px aanu, ivide 12px */
+    .form-box h1 {
+        margin-bottom: 12px;
+    }
+
+    .patient-name {
+        text-align: center;
+        color: var(--text-light);
+        margin-bottom: 28px;
+        font-size: 14px;
+    }
+
+    /* base-il input, select mathrame ullu, textarea ivide add cheythu */
+    .form-box textarea {
+        width: 100%;
+        padding: 12px 14px;
+        border: 2px solid var(--border);
+        border-radius: 8px;
+        font-size: 15px;
+        font-family: inherit;
+        color: var(--text);
+        outline: none;
+        min-height: 110px;
+        resize: vertical;
+        transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .form-box textarea::placeholder {
+        color: #9AA3AD;
+    }
+
+    .form-box textarea:focus {
+        border-color: var(--secondary);
+        box-shadow: 0 0 0 3px rgba(14, 154, 167, 0.15);
+    }
+
+    .error {
+        background: var(--danger-tint);
+        color: var(--danger);
+        padding: 12px;
+        border-radius: 8px;
+        font-size: 14px;
+        margin-bottom: 18px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="page-wrap">
+    <div class="form-box">
+
+        <h1>Add Medical Record</h1>
+
+        <p class="patient-name">Patient: {{ patient.name }}</p>
+
+        {% if error %}
+            <div class="error">{{ error }}</div>
+        {% endif %}
+
+        <form method="POST">
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label for="diagnosis">Diagnosis</label>
+                <input type="text" name="diagnosis" id="diagnosis" placeholder="Enter diagnosis" required>
+            </div>
+
+            <div class="form-group">
+                <label for="notes">Additional Notes</label>
+                <textarea name="notes" id="notes" placeholder="Enter medical notes (optional)"></textarea>
+            </div>
+
+            <button type="submit">Save Medical Record</button>
+        </form>
+
+        <a href="{% url 'medical_records' patient.id %}" class="back-link">&larr; Back to Medical Records</a>
+
+    </div>
+</div>
+{% endblock %}

@@ -1,175 +1,56 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Edit Patient - Hospital Management System</title>
+{% extends 'base.html' %}
 
-    <style>
-        :root {
-            --primary: #0B2545;
-            --secondary: #0E9AA7;
-            --background: #F3F5F7;
-            --card: #FFFFFF;
-            --text: #333840;
-            --text-light: #6B7280;
-            --border: #DCE3E8;
-        }
+{% block title %}Edit Patient{% endblock %}
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: "Segoe UI", Tahoma, sans-serif;
-            min-height: 100vh;
-            background: var(--background);
-            color: var(--text);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
-
-        .form-box {
-            background: var(--card);
-            width: 100%;
-            max-width: 420px;
-            padding: 40px 35px;
-            border-radius: 16px;
-            border-top: 6px solid var(--primary);
-            box-shadow: 0 10px 30px rgba(11, 37, 69, 0.12);
-        }
-
-        h1 {
-            color: var(--primary);
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 6px;
-            font-weight: 600;
-            color: var(--text);
-        }
-
-        input {
-            width: 100%;
-            padding: 12px 14px;
-            border: 2px solid var(--border);
-            border-radius: 8px;
-            font-size: 15px;
-            font-family: inherit;
-            color: var(--text);
-            outline: none;
-            transition: border-color 0.2s, box-shadow 0.2s;
-        }
-
-        input::placeholder {
-            color: #9AA3AD;
-        }
-
-        input:focus {
-            border-color: var(--secondary);
-            box-shadow: 0 0 0 3px rgba(14, 154, 167, 0.15);
-        }
-
-        button {
-            width: 100%;
-            padding: 13px;
-            background: var(--primary);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-
-        button:hover {
-            background: #16386B;
-        }
-
-        .back-link {
-            display: block;
-            text-align: center;
-            margin-top: 18px;
-            color: var(--text-light);
-            text-decoration: none;
-            font-size: 14px;
-        }
-
-        .back-link:hover {
-            color: var(--primary);
-            text-decoration: underline;
-        }
-    </style>
-</head>
-
-<body>
-
+{% block content %}
+<div class="page-wrap">
     <div class="form-box">
 
         <h1>Edit Patient</h1>
 
         <form method="POST">
-
             {% csrf_token %}
 
             <div class="form-group">
                 <label for="name">Patient Name</label>
-
-                <input
-                    type="text"
-                    name="name"
-                    id="name"
-                    value="{{ patient.name }}"
-                    required
-                >
+                <input type="text" name="name" id="name" value="{{ patient.name }}" required>
             </div>
 
             <div class="form-group">
                 <label for="age">Age</label>
-
-                <input
-                    type="number"
-                    name="age"
-                    id="age"
-                    value="{{ patient.age }}"
-                    required
-                >
+                <input type="number" name="age" id="age" value="{{ patient.age }}" required>
             </div>
 
             <div class="form-group">
                 <label for="disease">Disease</label>
+                <input type="text" name="disease" id="disease" value="{{ patient.disease }}" placeholder="Enter disease">
 
-                <input
-                    type="text"
-                    name="disease"
-                    id="disease"
-                    value="{{ patient.disease }}"
-                    placeholder="Enter disease"
-                >
+
+            <div style="margin-top: 15px; margin-bottom: 20px;">
+
+                <label  for="doctor">Select Doctor:</label>
+
+                <select name="doctor" id="doctor"
+                    style="display: block; margin-top: 8px; padding: 10px; width: 100%;">
+
+                    <option value="">No Doctor</option>
+
+                    {% for doctor in doctors %}
+
+                        <option value="{{ doctor.id }}">
+                            {% if patient.doctor_id == doctor.id %}selected{% endif %}
+                            {{ doctor.name }}
+                        </option>
+
+                    {% endfor %}
+                </select>
             </div>
 
-            <button type="submit">
-                Update Patient
-            </button>
-
+            <button type="submit">Update Patient</button>
         </form>
 
-        <a href="{% url 'patients' %}" class="back-link">
-            ← Back to Patients
-        </a>
+        <a href="{% url 'patients' %}" class="back-link">← Back to Patients</a>
 
     </div>
-
-</body>
-</html>
+</div>
+{% endblock %}

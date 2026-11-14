@@ -1,0 +1,265 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{% block title %}Hospital Management System{% endblock %}</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f6f9;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #0b2545;
+            padding: 15px 32px;
+        }
+
+        .brand {
+            color: white;
+            font-size: 20px;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .nav-links a:hover {
+            color: #c6d2d2;
+        }
+
+        .nav-links a.login-btn {
+            background: #c1cff0;
+            color: #0b2545;
+            padding: 8px 18px;
+            border-radius: 8px;
+        }
+
+        .nav-links a.login-btn:hover {
+            color: #0b2545;
+            opacity: 0.8;
+        }
+
+        /* Profile Dropdown */
+
+        .profile-dropdown {
+            position: relative;
+        }
+
+        .profile-btn {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            color: white;
+            font-weight: 500;
+            list-style: none;
+        }
+
+        .profile-btn::-webkit-details-marker {
+            display: none;
+        }
+
+        .nav-avatar {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid white;
+        }
+
+        .avatar-placeholder {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: #11998e;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 17px;
+        }
+
+        .arrow {
+            font-size: 12px;
+        }
+
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 48px;
+            right: 0;
+            background: white;
+            min-width: 180px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            overflow: hidden;
+            z-index: 1000;
+        }
+
+        .profile-dropdown[open] .dropdown-menu {
+            display: block;
+        }
+
+        .dropdown-menu a {
+            display: block;
+            padding: 13px 16px;
+            color: #333;
+            text-decoration: none;
+        }
+
+        .dropdown-menu a:hover {
+            background: #e8f5f3;
+            color: #167d72;
+        }
+
+        .content {
+            padding: 24px 32px;
+        }
+
+        @media (max-width: 750px) {
+
+            .navbar {
+                flex-wrap: wrap;
+                gap: 15px;
+                padding: 15px;
+            }
+
+            .nav-links {
+                flex-wrap: wrap;
+                gap: 15px;
+            }
+
+            .content {
+                padding: 15px;
+            }
+        }
+    </style>
+
+    {% block extra_css %}
+    {% endblock %}
+
+</head>
+
+<body>
+
+    <nav class="navbar">
+
+        <!-- Brand -->
+        <a href="{% url 'home' %}" class="brand">
+            🏥 Hospital Management System
+        </a>
+
+        <ul class="nav-links">
+
+            <li>
+                <a href="{% url 'doctors' %}">Doctors</a>
+            </li>
+
+            <li>
+                <a href="{% url 'patients' %}">Patients</a>
+            </li>
+
+            <li>
+                <a href="{% url 'departments' %}">Departments</a>
+            </li>
+
+            <li>
+                <a href="{% url 'treatments' %}">Treatments</a>
+            </li>
+
+            {% if user.is_authenticated %}
+
+                <!-- Profile Dropdown -->
+                <li>
+
+                    <details class="profile-dropdown">
+
+                        <summary class="profile-btn">
+
+                            {% if user.profile.avatar %}
+
+                                <img
+                                    src="{{ user.profile.avatar.url }}"
+                                    class="nav-avatar"
+                                    alt="Profile"
+                                >
+
+                            {% else %}
+
+                                <span class="avatar-placeholder">
+                                    {{ user.username|first|upper }}
+                                </span>
+
+                            {% endif %}
+
+                            <span>{{ user.username }}</span>
+
+                            <span class="arrow">▼</span>
+
+                        </summary>
+
+                        <div class="dropdown-menu">
+
+                            <a href="{% url 'profile' %}">
+                                My Profile
+                            </a>
+
+                            <a href="{% url 'logout' %}">
+                                Logout
+                            </a>
+
+                        </div>
+
+                    </details>
+
+                </li>
+
+            {% else %}
+
+                <li>
+                    <a href="{% url 'login' %}" class="login-btn">
+                        Login
+                    </a>
+                </li>
+
+            {% endif %}
+
+        </ul>
+
+    </nav>
+
+    <div class="content">
+
+        {% block content %}
+        {% endblock %}
+
+    </div>
+
+</body>
+</html>

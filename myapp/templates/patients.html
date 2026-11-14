@@ -1,42 +1,19 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Hospital Patients</title>
-
-    <style>
+{% extends 'base.html' %}
+{% block title %}Hospital Patients{% endblock %}
+{% block extra_css %}
+<style>
     :root {
-        --primary: #0B2545;        /* dark navy blue */
-        --secondary: #0E9AA7;      /* medical teal */
-        --background: #F3F5F7;     /* very light grey */
-        --card: #FFFFFF;           /* white */
-        --text: #333840;           /* dark grey */
-        --text-light: #6B7280;
-        --border: #DCE3E8;
-        --tint: #E3F4F6;           /* light teal tint */
+        --tint: #E3F4F6;
         --danger: #C0392B;
         --danger-tint: #FDE9E7;
-    }
-
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-    }
-
-    body {
-        font-family: "Segoe UI", Tahoma, sans-serif;
-        min-height: 100vh;
-        background: var(--background);
-        color: var(--text);
-        padding: 30px;
     }
 
     .container {
         max-width: 1100px;
         margin: auto;
+        padding: 10px 30px;
     }
 
-    /* Home Button */
     .home-link {
         display: inline-block;
         background: var(--card);
@@ -107,7 +84,6 @@
         font-size: 13px;
         font-weight: 600;
         margin-bottom: 12px;
-
     }
 
     .patient-name {
@@ -127,18 +103,30 @@
 
     .actions {
         display: flex;
+        flex-wrap: wrap;
+        align-items: stretch;
         gap: 10px;
         margin-top: 22px;
         padding-top: 18px;
         border-top: 1px solid var(--border);
     }
 
+    .actions form {
+        display: flex;
+        flex: 1;
+        margin: 0;
+    }
+
     .btn {
         flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         text-align: center;
         padding: 10px;
         border-radius: 7px;
         text-decoration: none;
+        font-family: inherit;
         font-size: 14px;
         font-weight: 600;
         border: 2px solid transparent;
@@ -155,6 +143,16 @@
         background: var(--card);
         border-color: var(--secondary);
         color: var(--primary);
+    }
+
+    .btn-records {
+        background: #E8EEF8;
+        color: var(--primary);
+    }
+
+    .btn-records:hover {
+        background: var(--card);
+        border-color: var(--secondary);
     }
 
     .btn-delete {
@@ -177,7 +175,7 @@
     }
 
     @media (max-width: 500px) {
-        body {
+        .container {
             padding: 18px;
         }
 
@@ -186,91 +184,92 @@
         }
     }
 </style>
+{% endblock %}
 
 
-</head>
+{% block content %}
+<div class="container">
 
-<body>
-
-    <div class="container">
-
-        <!-- Home Button -->
-        <a href="{% url 'home' %}" class="home-link">
-            &larr; Home
-        </a>
-
-        <div class="header">
-            <h1>Hospital Patients</h1>
-        </div>
+    <div class="header">
+        <h1>Hospital Patients</h1>
 
         <!-- Add Patient -->
-        <a href="{% url 'add_patient' %}" class="add-patient">
-            + Add Patient
-        </a>
+        <a href="{% url 'add_patient' %}" class="add-patient">+ Add Patient</a>
+    </div>
 
-        <!-- Patient Cards -->
-        <div class="patient-grid">
+    <!-- Patient Cards -->
+    <div class="patient-grid">
 
-            {% for patient in patients %}
+        {% for patient in patients %}
 
-                <div class="patient-card">
+            <div class="patient-card">
 
-                    <p class="patient-number">
-                        Patient #{{ patient.id }}
-                    </p>
+                <p class="patient-number">Patient #{{ patient.id }}</p>
 
-                    <h2 class="patient-name">
-                        {{ patient.name }}
-                    </h2>
+                <h2 class="patient-name">{{ patient.name }}</h2>
 
-                    <p class="patient-detail">
-                        <strong>Age:</strong> {{ patient.age }}
-                    </p>
+                <p class="patient-detail">
+                    <strong>Age:</strong> {{ patient.age }}
+                </p>
 
-                    <p class="patient-detail">
-                        <strong>Disease:</strong>
-                        {{ patient.disease|default:"Not specified" }}
-                    </p>
+                <p class="patient-detail">
+                    <strong>Disease:</strong>
+                    {{ patient.disease|default:"Not specified" }}
+                </p>
 
-                    <div class="actions">
+                <!-- Assigned Doctor -->
+                <p class="patient-detail">
+                    <strong>Doctor:</strong>
+                    {% if patient.doctor %}
+                        {{ patient.doctor.name }}
+                    {% else %}
+                        No Doctor Assigned
+                    {% endif %}
+                </p>
 
-                        <!-- Edit -->
-                        <a href="{% url 'edit_patient' patient.id %}"
-                           class="btn btn-edit">
-                            Edit
-                        </a>
+                <p class="patient-detail">
+                    <strong>Treatments:</strong>
 
-                        <!-- Delete -->
-                        <form method="POST"
-                              action="{% url 'delete_patient' patient.id %}"
-                              style="flex: 1; margin: 0;">
+                    {% for treatment in patient.treatments.all %}
+                        {{ treatment.name }}{% if not forloop.last %}, {% endif %}
+                    {% empty %}
+                        No treatments assigned
+                    {% endfor %}
+                </p>
 
-                            {% csrf_token %}
+                <div class="actions">
 
-                            <button type="submit"
-                                    class="btn btn-delete"
-                                    style="width: 100%;"
-                                    onclick="return confirm('Are you sure you want to delete this patient?');">
-                                Delete
-                            </button>
+                    <!-- Edit -->
+                    <a href="{% url 'edit_patient' patient.id %}" class="btn btn-edit">Edit</a>
 
-                        </form>
+                    <!-- View Medical Records -->
+                    <a href="{% url 'medical_records' patient.id %}" class="btn btn-records">Medical Records</a>
 
-                    </div>
+                    <!-- Delete -->
+                    <form method="POST"
+                          action="{% url 'delete_patient' patient.id %}"
+                          style="flex: 1; margin: 0;">
+                        {% csrf_token %}
+
+                        <button type="submit"
+                                class="btn btn-delete"
+                                style="width: 100%;"
+                                onclick="return confirm('Are you sure you want to delete this patient?');">
+                            Delete
+                        </button>
+                    </form>
 
                 </div>
 
-            {% empty %}
+            </div>
 
-                <div class="empty-message">
-                    No patients added yet.
-                </div>
+        {% empty %}
 
-            {% endfor %}
+            <div class="empty-message">No patients added yet.</div>
 
-        </div>
+        {% endfor %}
 
     </div>
 
-</body>
-</html>
+</div>
+{% endblock %}

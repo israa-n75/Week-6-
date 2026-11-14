@@ -1,0 +1,141 @@
+
+{% extends 'base.html' %}
+
+{% block title %}Edit Medical Record{% endblock %}
+
+{% block extra_css %}
+<style>
+    .form-container {
+        max-width: 500px;
+        margin: 40px auto;
+        padding: 30px;
+        background: var(--card);
+        border-radius: 14px;
+        border-top: 5px solid var(--primary);
+        box-shadow: 0 4px 15px rgba(11, 37, 69, 0.08);
+    }
+
+    .form-container h1 {
+        text-align: center;
+        color: var(--primary);
+        margin-bottom: 10px;
+    }
+
+    .patient-name {
+        text-align: center;
+        color: var(--text-light);
+        margin-bottom: 25px;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    label {
+        display: block;
+        margin-bottom: 7px;
+        font-weight: 600;
+    }
+
+    input, textarea {
+        width: 100%;
+        padding: 12px;
+        border: 2px solid var(--border);
+        border-radius: 8px;
+        font-size: 15px;
+        font-family: inherit;
+        box-sizing: border-box;
+    }
+
+    textarea {
+        min-height: 110px;
+        resize: vertical;
+    }
+
+    .save-btn {
+        width: 100%;
+        padding: 13px;
+        background: var(--primary);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+    }
+
+    .save-btn:hover {
+        background: #16386B;
+    }
+
+    .error {
+        color: #C0392B;
+        background: #FDE9E7;
+        padding: 12px;
+        border-radius: 8px;
+        margin-bottom: 18px;
+    }
+
+    .back-link {
+        display: block;
+        text-align: center;
+        margin-top: 18px;
+        color: var(--primary);
+        text-decoration: none;
+        font-weight: 600;
+    }
+</style>
+{% endblock %}
+
+
+{% block content %}
+<div class="form-container">
+
+    <h1>Edit Medical Record</h1>
+
+    <p class="patient-name">
+        Patient: {{ patient.name }}
+    </p>
+
+    {% if error %}
+        <div class="error">
+            {{ error }}
+        </div>
+    {% endif %}
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <div class="form-group">
+            <label for="diagnosis">Diagnosis</label>
+
+            <input
+                type="text"
+                name="diagnosis"
+                id="diagnosis"
+                value="{{ record.diagnosis }}"
+                required
+            >
+        </div>
+
+        <div class="form-group">
+            <label for="notes">Additional Notes</label>
+
+            <textarea
+                name="notes"
+                id="notes"
+            >{{ record.notes }}</textarea>
+        </div>
+
+        <button type="submit" class="save-btn">
+            Update Medical Record
+        </button>
+
+    </form>
+
+    <a href="{% url 'medical_records' patient.id %}" class="back-link">
+        &larr; Back to Medical Records
+    </a>
+
+</div>
+{% endblock %}

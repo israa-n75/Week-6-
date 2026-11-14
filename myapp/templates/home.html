@@ -1,34 +1,11 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Hospital Management System</title>
-    <style>
+{% extends 'base.html' %}
+
+{% block title %}Hospital Management System{% endblock %}
+
+{% block extra_css %}
+<style>
     :root {
-        --primary: #0B2545;        /* dark navy blue */
-        --secondary: #0E9AA7;      /* medical teal */
         --secondary-dark: #0A7D88;
-        --background: #F3F5F7;     /* very light grey */
-        --card: #FFFFFF;           /* white */
-        --text: #333840;           /* dark grey */
-        --text-light: #6B7280;
-        --border: #DCE3E8;
-    }
-
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-    }
-
-    body {
-        font-family: "Segoe UI", Tahoma, sans-serif;
-        min-height: 100vh;
-        background: var(--background);
-        color: var(--text);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        padding: 20px;
     }
 
     .container {
@@ -55,7 +32,7 @@
         font-size: 40px;
     }
 
-    h1 {
+    .container h1 {
         color: var(--primary);
         font-size: 28px;
     }
@@ -75,6 +52,7 @@
         display: flex;
         flex-direction: column;
         align-items: center;
+        justify-content: center;
         gap: 8px;
         padding: 22px 10px;
         background: var(--card);
@@ -96,11 +74,6 @@
         border-color: var(--secondary);
         transform: translateY(-4px);
         box-shadow: 0 8px 18px rgba(11, 37, 69, 0.15);
-
-    }
-
-    .menu a.wide {
-        grid-column: span 2;
     }
 
     .menu a.login {
@@ -122,16 +95,15 @@
             padding: 25px 18px;
         }
 
-        h1 {
+        .container h1 {
             font-size: 23px;
         }
     }
 </style>
+{% endblock %}
 
-    
-</head>
-
-<body>
+{% block content %}
+<div class="page-wrap">
     <div class="container">
 
         <div class="logo">🏥</div>
@@ -151,28 +123,16 @@
                 View Doctors
             </a>
 
-            <a href="{% url 'departments' %}" class="wide">
+            <a href="{% url 'departments' %}">
                 <span class="icon">🏢</span>
                 Departments
             </a>
 
-            {% if user.is_authenticated %}
-
-                <a href="{% url 'logout' %}" class="login">
-                    <span class="icon">🔓</span>
-                    Logout
-                </a>
-
-            {% else %}
-
-                <a href="{% url 'login' %}" class="login">
-                    <span class="icon">🔐</span>
-                    Login
-                </a>
-
-            {% endif %}
-
+            <a href="{% url 'treatments' %}">
+                <span class="icon">💊</span>
+                Treatments
+            </a>
         </div>
     </div>
-</body>
-</html>
+</div>
+{% endblock %}

@@ -1,0 +1,217 @@
+
+{% extends 'base.html' %}
+
+{% block title %}My Profile{% endblock %}
+
+{% block extra_css %}
+<style>
+    .profile-container {
+        max-width: 550px;
+        margin: 35px auto;
+        padding: 30px;
+        background: var(--card);
+        border-radius: 16px;
+        border-top: 5px solid var(--primary);
+        box-shadow: 0 8px 25px rgba(11, 37, 69, 0.10);
+    }
+
+    .profile-container h1 {
+        text-align: center;
+        color: var(--primary);
+        margin-bottom: 25px;
+    }
+
+    .avatar-section {
+        text-align: center;
+        margin-bottom: 25px;
+    }
+
+    .avatar {
+        width: 115px;
+        height: 115px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 4px solid var(--secondary);
+        margin-bottom: 12px;
+    }
+
+    .avatar-placeholder {
+        width: 115px;
+        height: 115px;
+        border-radius: 50%;
+        background: var(--tint);
+        color: var(--primary);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 45px;
+        margin: 0 auto 12px;
+    }
+
+    .username {
+        color: var(--primary);
+        font-size: 19px;
+        font-weight: 700;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    label {
+        display: block;
+        font-weight: 600;
+        margin-bottom: 8px;
+        color: var(--text);
+    }
+
+    input[type="text"],
+    input[type="file"],
+    textarea {
+        width: 100%;
+        padding: 12px;
+        border: 2px solid var(--border);
+        border-radius: 8px;
+        font-size: 15px;
+        font-family: inherit;
+        box-sizing: border-box;
+    }
+
+    textarea {
+        min-height: 100px;
+        resize: vertical;
+    }
+
+    input:focus,
+    textarea:focus {
+        outline: none;
+        border-color: var(--secondary);
+    }
+
+    .save-btn {
+        width: 100%;
+        padding: 13px;
+        background: var(--primary);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+    }
+
+    .save-btn:hover {
+        background: #16386B;
+    }
+
+    .back-link {
+        display: block;
+        text-align: center;
+        margin-top: 20px;
+        color: var(--primary);
+        text-decoration: none;
+        font-weight: 600;
+    }
+
+    .help-text {
+        font-size: 12px;
+        color: var(--text-light);
+        margin-top: 6px;
+    }
+
+    @media (max-width: 500px) {
+        .profile-container {
+            margin: 20px;
+            padding: 22px;
+        }
+    }
+</style>
+{% endblock %}
+
+
+{% block content %}
+<div class="profile-container">
+
+    <h1>My Profile</h1>
+
+    <!-- Avatar -->
+    <div class="avatar-section">
+
+        {% if profile.avatar %}
+
+            <img src="{{ profile.avatar.url }}"
+                 alt="Profile Picture"
+                 class="avatar">
+
+        {% else %}
+
+            <div class="avatar-placeholder">
+                {{ request.user.username|first|upper }}
+            </div>
+
+        {% endif %}
+
+        <p class="username">
+            {{ request.user.username }}
+        </p>
+
+        <p class="help-text">
+            Manage your profile information
+        </p>
+
+    </div>
+
+    <!-- Profile Form -->
+    <form method="POST" enctype="multipart/form-data">
+
+        {% csrf_token %}
+
+        <div class="form-group">
+
+            <label for="avatar">Profile Picture</label>
+
+            <input type="file"
+                   name="avatar"
+                   id="avatar"
+                   accept="image/*">
+
+            <p class="help-text">
+                Upload a profile picture.
+            </p>
+
+        </div>
+
+        <div class="form-group">
+
+            <label for="bio">Bio</label>
+
+            <textarea name="bio"
+                      id="bio"
+                      placeholder="Write something about yourself">{{ profile.bio }}</textarea>
+
+        </div>
+
+        <div class="form-group">
+
+            <label for="phone">Phone Number</label>
+
+            <input type="text"
+                   name="phone"
+                   id="phone"
+                   value="{{ profile.phone }}"
+                   placeholder="Enter phone number">
+
+        </div>
+
+        <button type="submit" class="save-btn">
+            Save Profile
+        </button>
+
+    </form>
+
+    <a href="{% url 'home' %}" class="back-link">
+        &larr; Back to Home
+    </a>
+
+</div>
+{% endblock %}

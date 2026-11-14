@@ -1,109 +1,31 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Login - Hospital Management System</title>
-    <style>
-        :root {
-            --primary: #0B2545;
-            --secondary: #0E9AA7;
-            --background: #F3F5F7;
-            --card: #FFFFFF;
-            --text: #333840;
-            --text-light: #6B7280;
-            --border: #DCE3E8;
-        }
+{% extends 'base.html' %}
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+{% block title %}Login{% endblock %}
 
-        body {
-            font-family: "Segoe UI", Tahoma, sans-serif;
-            min-height: 100vh;
-            background: var(--background);
-            color: var(--text);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
+{% block extra_css %}
+<style>
+    /* base-il 420px aanu, ivide 400px venam */
+    .form-box {
+        max-width: 400px;
+    }
 
-        .login-box {
-            background: var(--card);
-            width: 100%;
-            max-width: 400px;
-            padding: 40px 35px;
-            border-radius: 16px;
-            border-top: 6px solid var(--primary);
-            box-shadow: 0 10px 30px rgba(11, 37, 69, 0.12);
-        }
+    /* base-il margin-bottom 30px aanu, ivide 8px (subtitle thaazhe varunnathu kondu) */
+    .form-box h1 {
+        margin-bottom: 8px;
+    }
 
-        h1 {
-            color: var(--primary);
-            text-align: center;
-            margin-bottom: 8px;
-        }
+    .subtitle {
+        text-align: center;
+        color: var(--text-light);
+        margin-bottom: 30px;
+    }
+</style>
+{% endblock %}
 
-        .subtitle {
-            text-align: center;
-            color: var(--text-light);
-            margin-bottom: 30px;
-        }
+{% block content %}
+<div class="page-wrap">
+    <div class="form-box">
 
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 6px;
-            font-weight: 600;
-            color: var(--text);
-        }
-
-        input {
-            width: 100%;
-            padding: 12px 14px;
-            border: 2px solid var(--border);
-            border-radius: 8px;
-            font-size: 15px;
-            font-family: inherit;
-            color: var(--text);
-            outline: none;
-            transition: border-color 0.2s, box-shadow 0.2s;
-        }
-
-        input::placeholder {
-            color: #9AA3AD;
-        }
-
-        input:focus {
-            border-color: var(--secondary);
-            box-shadow: 0 0 0 3px rgba(14, 154, 167, 0.15);
-        }
-
-        button {
-            width: 100%;
-            padding: 13px;
-            background: var(--primary);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-
-        button:hover {
-            background: #16386B;
-        }
-    </style>
-</head>
-<body>
-    <div class="login-box">
         <h1>🔐 Login</h1>
         <p class="subtitle">Hospital Management System</p>
 
@@ -122,6 +44,7 @@
 
             <button type="submit">Login</button>
         </form>
+
     </div>
-</body>
-</html>
+</div>
+{% endblock %}

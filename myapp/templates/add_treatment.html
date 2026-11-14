@@ -1,0 +1,181 @@
+
+{% extends 'base.html' %}
+
+{% block title %}Add Treatment{% endblock %}
+
+{% block extra_css %}
+<style>
+    .form-box {
+        max-width: 550px;
+        margin: 35px auto;
+        padding: 35px;
+        background: var(--card);
+        border-radius: 14px;
+        border-top: 5px solid var(--primary);
+        box-shadow: 0 4px 15px rgba(11, 37, 69, 0.08);
+    }
+
+    h1 {
+        color: var(--primary);
+        text-align: center;
+        margin-bottom: 28px;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    label {
+        display: block;
+        font-weight: 600;
+        margin-bottom: 8px;
+    }
+
+    input[type="text"],
+    textarea {
+        width: 100%;
+        padding: 12px 14px;
+        border: 2px solid var(--border);
+        border-radius: 8px;
+        font-size: 15px;
+        font-family: inherit;
+        box-sizing: border-box;
+    }
+
+    textarea {
+        min-height: 100px;
+        resize: vertical;
+    }
+
+    .patient-options {
+        max-height: 250px;
+        overflow-y: auto;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 12px;
+    }
+
+    .patient-option {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 8px 4px;
+        font-weight: 400;
+        margin: 0;
+    }
+
+    .patient-option input {
+        width: auto;
+    }
+
+    .save-btn {
+        width: 100%;
+        padding: 13px;
+        background: var(--primary);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+    }
+
+    .save-btn:hover {
+        background: #16386B;
+    }
+
+    .back-link {
+        display: block;
+        text-align: center;
+        margin-top: 18px;
+        color: var(--primary);
+        text-decoration: none;
+        font-weight: 600;
+    }
+
+    .empty {
+        color: var(--text-light);
+        font-size: 14px;
+    }
+
+    @media (max-width: 500px) {
+        .form-box {
+            margin: 20px;
+            padding: 25px 18px;
+        }
+    }
+</style>
+{% endblock %}
+
+
+{% block content %}
+<div class="form-box">
+
+    <h1>Add Treatment</h1>
+
+    <form method="POST">
+
+        {% csrf_token %}
+
+        <div class="form-group">
+
+            <label for="name">Treatment Name</label>
+
+            <input type="text"
+                   name="name"
+                   id="name"
+                   placeholder="Enter treatment name"
+                   required>
+
+        </div>
+
+        <div class="form-group">
+
+            <label for="description">Description</label>
+
+            <textarea name="description"
+                      id="description"
+                      placeholder="Enter treatment details"></textarea>
+
+        </div>
+
+        <div class="form-group">
+
+            <label>Select Patients</label>
+
+            <div class="patient-options">
+
+                {% for patient in patients %}
+
+                    <label class="patient-option">
+
+                        <input type="checkbox"
+                               name="patients"
+                               value="{{ patient.id }}">
+
+                        {{ patient.name }} - {{ patient.disease }}
+
+                    </label>
+
+                {% empty %}
+
+                    <p class="empty">No patients available.</p>
+
+                {% endfor %}
+
+            </div>
+
+        </div>
+
+        <button type="submit" class="save-btn">
+            Add Treatment
+        </button>
+
+    </form>
+
+    <a href="{% url 'treatments' %}" class="back-link">
+        &larr; Back to Treatments
+    </a>
+
+</div>
+{% endblock %}

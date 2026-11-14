@@ -1,278 +1,248 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Hospital Doctors</title>
+{% extends 'base.html' %}
 
-    <style>
-        :root {
-            --primary: #0B2545;
-            --secondary: #0E9AA7;
-            --background: #F3F5F7;
-            --card: #FFFFFF;
-            --text: #333840;
-            --text-light: #6B7280;
-            --border: #DCE3E8;
-            --tint: #E3F4F6;
-            --danger: #C0392B;
-            --danger-tint: #FDE9E7;
-        }
+{% block title %}Hospital Doctors{% endblock %}
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+{% block extra_css %}
+<style>
+    :root {
+        --tint: #E3F4F6;
+        --danger: #C0392B;
+        --danger-tint: #FDE9E7;
+    }
 
-        body {
-            font-family: "Segoe UI", Tahoma, sans-serif;
-            min-height: 100vh;
-            background: var(--background);
-            color: var(--text);
-            padding: 30px;
-        }
+    .container {
+        max-width: 1100px;
+        margin: auto;
+        padding: 10px 30px;
+    }
 
+    .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
+        gap: 15px;
+    }
+
+    .header h1 {
+        color: var(--primary);
+    }
+
+    .add-btn {
+        display: inline-block;
+        background: var(--primary);
+        color: white;
+        padding: 12px 20px;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: 600;
+        white-space: nowrap;
+        transition: background 0.2s;
+    }
+
+    .add-btn:hover {
+        background: #16386B;
+    }
+
+    .doctor-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 22px;
+    }
+
+    .doctor-card {
+        background: var(--card);
+        padding: 25px;
+        border-radius: 14px;
+        box-shadow: 0 4px 15px rgba(11, 37, 69, 0.08);
+        border-top: 5px solid var(--primary);
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .doctor-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 8px 22px rgba(11, 37, 69, 0.15);
+    }
+
+    .doctor-number {
+    color: #031742e2;
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    }
+
+    .doctor-name {
+    font-size: 22px;
+    font-weight: 700;
+    color: #0B2545;
+    margin-bottom: 20px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+    overflow-wrap: anywhere;
+    }
+
+    .field {
+        margin-bottom: 14px;
+    }
+
+    .label {
+        display: block;
+        color: #24262a;
+        font-size: 12px;
+        font-weight: 600;
+        letter-spacing: 0.6px;
+        text-transform: uppercase;
+        margin-bottom: 3px;
+    }
+
+    .value {
+        display: block;
+        color: #4d545f;
+        font-size: 16px;
+        font-weight: 500;
+        overflow-wrap: anywhere;
+    }
+
+    .actions {
+        display: flex;
+        gap: 10px;
+        margin-top: 22px;
+    }
+
+    .edit-btn,
+    .delete-btn {
+        flex: 1;
+        padding: 10px;
+        border: 2px solid transparent;
+        border-radius: 7px;
+        text-align: center;
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+
+    .edit-btn {
+        background: var(--tint);
+        color: var(--primary);
+    }
+
+    .edit-btn:hover {
+        background: var(--card);
+        border-color: var(--secondary);
+    }
+
+    .delete-btn {
+        background: var(--danger-tint);
+        color: var(--danger);
+    }
+
+    .delete-btn:hover {
+        background: var(--danger);
+        color: white;
+    }
+
+    .empty {
+        background: var(--card);
+        padding: 30px;
+        border-radius: 12px;
+        text-align: center;
+        color: var(--text-light);
+        grid-column: 1 / -1;
+    }
+
+    @media (max-width: 500px) {
         .container {
-            max-width: 1100px;
-            margin: auto;
-        }
-
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 30px;
-            gap: 15px;
+            padding: 18px;
         }
 
         .header h1 {
-            color: var(--primary);
+            font-size: 22px;
         }
 
         .add-btn {
-            display: inline-block;
-            background: var(--primary);
-            color: white;
-            padding: 12px 20px;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: 600;
-            white-space: nowrap;
-            transition: background 0.2s;
-        }
-
-        .add-btn:hover {
-            background: #16386B;
-        }
-
-        .doctor-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 22px;
-        }
-
-        .doctor-card {
-            background: var(--card);
-            padding: 25px;
-            border-radius: 14px;
-            box-shadow: 0 4px 15px rgba(11, 37, 69, 0.08);
-            border-top: 5px solid var(--primary);
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-
-        .doctor-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 8px 22px rgba(11, 37, 69, 0.15);
-        }
-
-        .doctor-number {
-            color: var(--text-light);
-            font-size: 13px;
-            font-weight: 600;
-            margin-bottom: 8px;
-        }
-
-        .doctor-name {
-            font-size: 22px;
-            font-weight: 700;
-            color: var(--primary);
-            margin-bottom: 20px;
-            padding-bottom: 16px;
-            border-bottom: 1px solid var(--border);
-            overflow-wrap: anywhere;
-        }
-
-        .field {
-            margin-bottom: 14px;
-        }
-
-        .label {
-            display: block;
-            color: var(--text-light);
-            font-size: 12px;
-            font-weight: 600;
-            letter-spacing: 0.6px;
-            text-transform: uppercase;
-            margin-bottom: 3px;
-        }
-
-        .value {
-            display: block;
-            color: var(--text);
-            font-size: 16px;
-            font-weight: 500;
-            overflow-wrap: anywhere;
-        }
-
-        .actions {
-            display: flex;
-            gap: 10px;
-            margin-top: 22px;
-        }
-
-        .edit-btn,
-        .delete-btn {
-            flex: 1;
-            padding: 10px;
-            border: 2px solid transparent;
-            border-radius: 7px;
-            text-align: center;
-            text-decoration: none;
+            padding: 10px 12px;
             font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
         }
+    }
+</style>
+{% endblock %}
 
-        .edit-btn {
-            background: var(--tint);
-            color: var(--primary);
-        }
+{% block content %}
+<div class="container">
 
-        .edit-btn:hover {
-            background: var(--card);
-            border-color: var(--secondary);
-        }
+    <div class="header">
+        <h1>Doctors List</h1>
+    
+        <a href="{% url 'add_doctor' %}" class="add-btn">+ Add Doctor</a>
+    </div>
 
-        .delete-btn {
-            background: var(--danger-tint);
-            color: var(--danger);
-        }
+    <div class="doctor-grid">
 
-        .delete-btn:hover {
-            background: var(--danger);
-            color: white;
-        }
+        {% for doctor in doctors %}
 
-        .empty {
-            background: var(--card);
-            padding: 30px;
-            border-radius: 12px;
-            text-align: center;
-            color: var(--text-light);
-            grid-column: 1 / -1;
-        }
+            <div class="doctor-card">
 
-        .back-link {
-            display: inline-block;
-            margin-top: 28px;
-            color: var(--primary);
-            text-decoration: none;
-            font-weight: 600;
-        }
+                <p class="doctor-number">Doctor #{{ doctor.id }}</p>
 
-        .back-link:hover {
-            text-decoration: underline;
-        }
+                <h2 class="doctor-name">{{ doctor.name }}</h2>
 
-        @media (max-width: 500px) {
-            body {
-                padding: 18px;
-            }
-
-            .header h1 {
-                font-size: 22px;
-            }
-
-            .add-btn {
-                padding: 10px 12px;
-                font-size: 14px;
-            }
-        }
-    </style>
-</head>
-
-<body>
-    <div class="container">
-
-        <div class="header">
-            <h1>Doctors List</h1>
-
-            <a href="{% url 'add_doctor' %}" class="add-btn">
-                + Add Doctor
-            </a>
-        </div>
-
-        <div class="doctor-grid">
-
-            {% for doctor in doctors %}
-
-                <div class="doctor-card">
-
-                    <p class="doctor-number">
-                        Doctor #{{ doctor.id }}
-                    </p>
-
-                    <h2 class="doctor-name">
-                        {{ doctor.name }}
-                    </h2>
-
-                    <div class="field">
-                        <span class="label">Specialization</span>
-                        <span class="value">{{ doctor.specialization }}</span>
-                    </div>
-
-                    <div class="field">
-                        <span class="label">Age</span>
-                        <span class="value">{{ doctor.age }}</span>
-                    </div>
-
-                    <div class="actions">
-
-                        <a href="{% url 'edit_doctor' doctor.id %}"
-                           class="edit-btn">
-                            Edit
-                        </a>
-
-                        <form method="POST"
-                              action="{% url 'delete_doctor' doctor.id %}"
-                              onsubmit="return confirm('Are you sure you want to delete this doctor?');"
-                              style="flex: 1;">
-                            {% csrf_token %}
-
-                            <button type="submit" class="delete-btn"
-                                    style="width: 100%;">
-                                Delete
-                            </button>
-                        </form>
-
-                    </div>
-
+                <div class="field">
+                    <span class="label">Specialization</span>
+                    <span class="value">{{ doctor.specialization }}</span>
                 </div>
 
-            {% empty %}
-
-                <div class="empty">
-                    <p>No doctors added yet.</p>
+                <div class="field">
+                    <span class="label">Age</span>
+                    <span class="value">{{ doctor.age }}</span>
                 </div>
 
-            {% endfor %}
+                <!-- Department Details -->
+                <div class="field">
+                    <span class="label">Department</span>
+                    <span class="value">
+                        {% if doctor.department %}
+                            {{ doctor.department.name }}
+                        {% else %}
+                            Not Assigned
+                        {% endif %}
+                    </span>
+                </div>
 
-        </div>
+                <!-- View Patients -->
+                <div class="field">
+                    <a href="{% url 'doctor_patients' doctor.id %}" class="edit-btn">
+                        View Patients
+                    </a>
+                </div>
 
-        <a href="{% url 'home' %}" class="back-link">
-            &larr; Back to Home
-        </a>
+                <div class="actions">
+                    <a href="{% url 'edit_doctor' doctor.id %}" class="edit-btn">Edit</a>
+
+                    <form method="POST"
+                          action="{% url 'delete_doctor' doctor.id %}"
+                          onsubmit="return confirm('Are you sure you want to delete this doctor?');"
+                          style="flex: 1;">
+                        {% csrf_token %}
+
+                        <button type="submit" class="delete-btn" style="width: 100%;">
+                            Delete
+                        </button>
+                    </form>
+                </div>
+
+            </div>
+
+        {% empty %}
+
+            <div class="empty">
+                <p>No doctors added yet.</p>
+            </div>
+
+        {% endfor %}
 
     </div>
-</body>
-</html>
+
+</div>
+{% endblock %}
